@@ -1,0 +1,88 @@
+version: '3'
+services:
+    # We need to run the FPM container for our application
+    fpm_server:
+        build:
+            context: .
+            dockerfile: ./docker/production/Dockerfile
+            target: fpm_server
+        image: laravel-in-kubernetes/fpm_server
+        # By default the .env in the project root will be loaded as the environment for all containers
+        environment:
+            APP_DEBUG: "true"
+        networks:
+            - laravel-in-kubernetes
+    # Run the web server container for static content, and proxying to our FPM container
+    web_server:
+        build:
+            context: .
+            dockerfile: ./docker/production/Dockerfile
+            target: web_server
+        image: laravel-in-kubernetes/web_server
+        ports:
+            - '8080:80'
+        environment:
+            # We need to pass in the new FPM hst as the name of the fpm container on port 9000
+            FPM_HOST: "fpm_server:9000"
+        networks:
+            - laravel-in-kubernetes
+        depends_on:
+            - fpm_server
+    # Run the Laravel Scheduler
+    cron:
+        build:
+            context: .
+            dockerfile: ./docker/production/Dockerfile
+            target: cron
+        image: laravel-in-kubernetes/cron
+        networks:
+            - laravel-in-kubernetes
+    # Run frontend
+    frontend:
+        build:
+            context: .
+            dockerfile: ./docker/production/Dockerfile
+            target: frontend
+        command: ["yarn", "dev"]
+        image: laravel-in-kubernetes/frontend
+        networks:
+            - laravel-in-kubernetes
+    task.trustup.io_mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-43306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'laravel-in-kubernetes-mysql:/var/lib/mysql'
+        networks:
+            - laravel-in-kubernetes
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            retries: 3
+            timeout: 5s
+    task.trustup.io_redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-46379}:6379'
+        volumes:
+            - 'laravel-in-kubernetes-redis:/data'
+        networks:
+            - laravel-in-kubernetes
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
+networks:
+    laravel-in-kubernetes:
+        driver: bridge
+volumes:
+    laravel-in-kubernetes-mysql:
+        driver: local
+    laravel-in-kubernetes-redis:
+        driver: local

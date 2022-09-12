@@ -1,0 +1,102 @@
+# For more information: https://laravel.com/docs/sail
+version: '3'
+services:
+    task.trustup.io:
+        container_name: task.trustup.io
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.1/app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-48080}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - task.trustup.io_sail
+            - applications
+        depends_on:
+            - task.trustup.io_mysql
+            - task.trustup.io_redis
+            - task.trustup.io_meilisearch
+            - task.trustup.io_mailhog
+            - task.trustup.io_selenium
+    task.trustup.io_mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-43306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'task.trustup.io_sail-mysql:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - task.trustup.io_sail
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            retries: 3
+            timeout: 5s
+    task.trustup.io_redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-46379}:6379'
+        volumes:
+            - 'task.trustup.io_sail-redis:/data'
+        networks:
+            - task.trustup.io_sail
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
+    task.trustup.io_meilisearch:
+        image: 'getmeili/meilisearch:latest'
+        ports:
+            - '${FORWARD_MEILISEARCH_PORT:-47700}:7700'
+        volumes:
+            - 'task.trustup.io_sail-meilisearch:/meili_data'
+        networks:
+            - task.trustup.io_sail
+        healthcheck:
+            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
+            retries: 3
+            timeout: 5s
+    task.trustup.io_mailhog:
+        image: 'mailhog/mailhog:latest'
+        ports:
+            - '${FORWARD_MAILHOG_PORT:-41025}:1025'
+            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-48025}:8025'
+        networks:
+            - task.trustup.io_sail
+    task.trustup.io_selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - task.trustup.io_sail
+networks:
+    task.trustup.io_sail:
+        driver: bridge
+    applications:
+        name: applications
+        external: true
+volumes:
+    task.trustup.io_sail-mysql:
+        driver: local
+    task.trustup.io_sail-redis:
+        driver: local
+    task.trustup.io_sail-meilisearch:
+        driver: local

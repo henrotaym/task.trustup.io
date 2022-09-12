@@ -1,0 +1,6 @@
+/vendor
+/node_modules
+/docker/**/docker-compose.yml
+/docker/**/Dockerfile
+/infrastructure
+/kubernetes
