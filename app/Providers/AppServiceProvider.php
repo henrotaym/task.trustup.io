@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Queries\MediaModelQuery;
+use App\Queries\TaskQuery;
+use App\Repository\TaskRepository;
 use Henrotaym\LaravelContainerAutoRegister\Services\AutoRegister\Contracts\AutoRegisterContract;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
     {
         /** @var AutoRegisterContract */
         $autoRegister = $this->app->make(AutoRegisterContract::class);
-        $autoRegister->scanWhere(MediaModelQuery::class);
+        $autoRegister->scanWhere(TaskQuery::class);
+        $autoRegister->scanWhere(TaskRepository::class);
     }
 
     /**

@@ -51,4 +51,11 @@ abstract class Repository
 
         return $this;
     }
+
+    public function delete(): Repository
+    {
+        $this->getModel()->delete();
+
+        return $this;
+    }
 }

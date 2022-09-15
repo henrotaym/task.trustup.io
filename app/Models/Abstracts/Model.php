@@ -2,6 +2,7 @@
 namespace App\Models\Abstracts;
 
 use App\Models\Traits\HasUuid;
+use App\Models\Traits\Persistable;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,7 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 abstract class Model extends EloquentModel
 {
-    use HasUuid, SoftDeletes;
+    use
+        HasUuid,
+        SoftDeletes,
+        Persistable
+    ;
 
     /**
      * Getting id.

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\MediaModelController;
+use App\Http\Controllers\Api\TaskController;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,11 +17,16 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::prefix('media')->name('media.')->middleware(AuthorizedServer::class)->group(function () {
-    Route::post('/', [MediaModelController::class, 'store'])->name('store');
-    Route::get('/', [MediaModelController::class, 'index'])->name('index');
-});
+// Route::prefix('tasks')->name('tasks.')->middleware(AuthorizedServer::class)->group(function () {
+//     Route::post('/', [TaskController::class, 'store'])->name('store');
+//     Route::get('/', [TaskController::class, 'index'])->name('index');
+//     Route::put('/', [TaskController::class, 'store'])->name('store');
+//     Route::destroy('/', [TaskController::class, 'index'])->name('index');
+//     Route::show('/', [TaskController::class, 'index'])->name('index');
+// });
+
+Route::apiResource('tasks', TaskController::class)->middleware(AuthorizedServer::class);
