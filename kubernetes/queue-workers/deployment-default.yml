@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: laravel-in-kubernetes-queue-worker-default
+  name: task-trustup-io-queue-worker-default
   labels:
     tier: backend
     layer: queue-worker
     queue: default
   annotations:
-    configmap.reloader.stakater.com/reload: "laravel-in-kubernetes"
-    secret.reloader.stakater.com/reload: "laravel-in-kubernetes"
+    configmap.reloader.stakater.com/reload: "task-trustup-io"
+    secret.reloader.stakater.com/reload: "task-trustup-io"
 spec:
   replicas: 1
   selector:
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: queue-worker
-          image: henrotaym/task-trustup-io-cli
+          image: henrotaym/task-trustup-io-cli:0.0.1
           command:
             - php
           args:
@@ -37,6 +37,6 @@ spec:
             - containerPort: 9000
           envFrom:
             - configMapRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io
             - secretRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: laravel-in-kubernetes-webserver
+  name: task-trustup-io-webserver
   labels:
     tier: backend
     layer: webserver
@@ -19,10 +19,10 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: henrotaym/task-trustup-io-web
+          image: henrotaym/task-trustup-io-web:0.0.1
           ports:
             - containerPort: 80
           env:
             # Inject the FPM Host as we did with Docker Compose
             - name: FPM_HOST
-              value: laravel-in-kubernetes-fpm:9000
+              value: task-trustup-io-fpm:9000

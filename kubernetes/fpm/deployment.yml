@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: laravel-in-kubernetes-fpm
+  name: task-trustup-io-fpm
   labels:
     tier: backend
     layer: fpm
   annotations:
-    configmap.reloader.stakater.com/reload: "laravel-in-kubernetes"
-    secret.reloader.stakater.com/reload: "laravel-in-kubernetes"
+    configmap.reloader.stakater.com/reload: "task-trustup-io"
+    secret.reloader.stakater.com/reload: "task-trustup-io"
 spec:
   replicas: 1
   selector:
@@ -22,7 +22,7 @@ spec:
     spec:
       initContainers:
         - name: migrations
-          image: henrotaym/task-trustup-io-cli
+          image: henrotaym/task-trustup-io-cli:0.0.1
           command:
             - php
           args:
@@ -31,16 +31,21 @@ spec:
             - --force
           envFrom:
             - configMapRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io
             - secretRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io
       containers:
         - name: fpm
-          image: henrotaym/task-trustup-io-fpm
+          image: henrotaym/task-trustup-io-fpm:0.0.1
           ports:
             - containerPort: 9000
+          command: ["/bin/sh"]
+          args: ["-c", "php artisan event:cache && \
+            php artisan route:cache && \
+            php artisan view:cache && \
+            exec php-fpm"]
           envFrom:
             - configMapRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io
             - secretRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io

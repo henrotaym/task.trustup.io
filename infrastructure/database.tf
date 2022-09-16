@@ -76,3 +76,9 @@ output "laravel-in-kubernetes-database-name" {
 output "laravel-in-kubernetes-database-user-name" {
   value = digitalocean_database_user.laravel-in-kubernetes.name
 }
+
+# Expose the password of the database user
+output "laravel-in-kubernetes-database-user-password" {
+  value = digitalocean_database_user.laravel-in-kubernetes.password
+  sensitive = true
+}

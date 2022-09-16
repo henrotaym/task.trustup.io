@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: laravel-in-kubernetes-cron
+  name: task-trustup-io-cron
   labels:
     tier: backend
     layer: cron
   annotations:
-    configmap.reloader.stakater.com/reload: "laravel-in-kubernetes"
-    secret.reloader.stakater.com/reload: "laravel-in-kubernetes"
+    configmap.reloader.stakater.com/reload: "task-trustup-io"
+    secret.reloader.stakater.com/reload: "task-trustup-io"
 spec:
   replicas: 1
   selector:
@@ -22,9 +22,9 @@ spec:
     spec:
       containers:
         - name: cron
-          image: henrotaym/task-trustup-io-cron
+          image: henrotaym/task-trustup-io-cron:0.0.1
           envFrom:
             - configMapRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io
             - secretRef:
-                name: laravel-in-kubernetes
+                name: task-trustup-io

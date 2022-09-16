@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: laravel-in-kubernetes-redis
+  name: task-trustup-io-redis
   labels:
     tier: backend
     layer: redis
 spec:
-  serviceName: laravel-in-kubernetes-redis
+  serviceName: task-trustup-io-redis
   selector:
     matchLabels:
       tier: backend
@@ -31,4 +31,4 @@ spec:
       volumes:
         - name: redis-aof
           persistentVolumeClaim:
-            claimName: laravel-in-kubernetes-redis
+            claimName: task-trustup-io-redis
