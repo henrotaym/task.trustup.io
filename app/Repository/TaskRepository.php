@@ -6,11 +6,11 @@ use App\Models\Task;
 use App\Models\Abstracts\Model;
 use Illuminate\Support\Collection;
 use App\Repository\Abstracts\Repository;
-use App\Contracts\Queries\TaskRepositoryContract;
+use App\Contracts\Repository\TaskRepositoryContract;
+use App\Contracts\Repository\Private\RepositoryContract;
 use Henrotaym\LaravelTrustupTaskIoCommon\Models\Traits\HasOptions;
 use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\TaskContract;
 use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\UserContract;
-use Henrotaym\LaravelTrustupTaskIoCommon\Enum\Requests\Task\TaskStatus;
 
 /**
  * Handling email attachment model changes.
@@ -21,13 +21,13 @@ class TaskRepository extends Repository implements TaskRepositoryContract
 {
     use HasOptions;
 
-    /**
+        /**
      * Setting related model.
      * 
      * @param Task $model
      * @return static
      */
-    public function setModel(Model $model): Repository
+    public function setModel(Model $model): RepositoryContract
     {
         parent::setModel($model);
         $this->resetOptions()
@@ -98,7 +98,7 @@ class TaskRepository extends Repository implements TaskRepositoryContract
     }
 
     /** @return static */
-    public function setDueDate(Carbon $dueDate): self
+    public function setDueDate(?Carbon $dueDate): self
     {
         $this->getModel()->due_date = $dueDate;
 
@@ -133,6 +133,8 @@ class TaskRepository extends Repository implements TaskRepositoryContract
             ->setAppKey($task->getAppKey())
             ->setModelId($task->getModelId())
             ->setModelType($task->getModelType());
+        
+        $this->getModel()->options = $this->options;
 
         return $this;
     }

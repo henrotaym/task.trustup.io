@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Api\Auth\Endpoints\UserEndpoint;
 use App\Queries\TaskQuery;
 use App\Repository\TaskRepository;
 use Henrotaym\LaravelContainerAutoRegister\Services\AutoRegister\Contracts\AutoRegisterContract;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $autoRegister = $this->app->make(AutoRegisterContract::class);
         $autoRegister->scanWhere(TaskQuery::class);
         $autoRegister->scanWhere(TaskRepository::class);
+        $autoRegister->scanWhere(UserEndpoint::class);
     }
 
     /**

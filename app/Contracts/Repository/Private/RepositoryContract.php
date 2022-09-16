@@ -1,5 +1,5 @@
 <?php
-namespace App\Contracts\Queries;
+namespace App\Contracts\Repository\Private;
 
 use App\Models\Abstracts\Model;
 use Henrotaym\LaravelContainerAutoRegister\Services\AutoRegister\Contracts\AutoRegistrableContract;
@@ -31,5 +31,10 @@ interface RepositoryContract extends AutoRegistrableContract
      */
     public function persist(): RepositoryContract;
 
+    /**
+     * Deleting model.
+     * 
+     * @return static
+     */
     public function delete(): RepositoryContract;
 }

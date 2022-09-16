@@ -17,9 +17,9 @@ class TaskQuery extends AbstractQuery implements TaskQueryContract
     /** @return static */
     public function matchingIndexRequest(IndexTaskRequestContract $request): TaskQueryContract
     {
-        $query =  $this->whereAppKey($request->getTask()->getAppKey())
-            ->whereModelId($request->getTask()->getModelId())
-            ->whereModelType($request->getTask()->getModelType())
+        $query =  $this->whereAppKey($request->getAppKey())
+            ->whereModelId($request->getModelId())
+            ->whereModelType($request->getModelType())
             ->whereStatus($request->getStatus());
 
         return $query;

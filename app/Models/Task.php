@@ -1,13 +1,14 @@
 <?php
 namespace App\Models;
 
+use App\Contracts\Api\Auth\Endpoints\UserEndpointContract;
 use App\Models\Abstracts\Model as AbstractModel;
 use Carbon\Carbon;
-use Henrotaym\LaravelTrustupTaskIoCommon\Models\Traits\HasOptions;
 use Illuminate\Support\Collection;
 
 class Task extends AbstractModel
 {
+    protected ?Collection $authUsers = null;
     /**
      * The attributes that are mass assignable.
      *
@@ -21,7 +22,8 @@ class Task extends AbstractModel
         'done_at',
         'due_date',
         'having_due_date_time',
-        'user_ids'
+        'user_ids',
+        'options'
     ];
 
     protected $dates = [
@@ -31,7 +33,8 @@ class Task extends AbstractModel
 
     protected $casts = [
         'having_due_date_time' => 'boolean',
-        'user_ids' => 'array'
+        'user_ids' => 'array',
+        'options' => 'array'
     ];
 
     public function getModelId(): int
@@ -77,13 +80,19 @@ class Task extends AbstractModel
 
     public function getOptions(): array
     {
-        return $this->options;
+        return $this->options ?? [];
     }
 
     public function getUsers(): Collection
     {
-        /** @TODO Send request to auth.trustup.io to get users details */
-        return collect($this->user_ids);
+        if ($this->authUsers):
+            return $this->authUsers;
+        endif;
+
+        /** @var UserEndpointContract */
+        $api = app()->make(UserEndpointContract::class);
+
+        return $this->authUsers = $api->getUserByIds($this->user_ids);
     }
 
     /**

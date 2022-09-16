@@ -26,7 +26,6 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'task.uuid' => ['required', 'string', 'exists:' . Task::class, ',uuid'],
             'task.model_id' => ['required', 'integer'],
             'task.model_type' => ['required', 'string'],
             'task.app_key' => ['sometimes', 'nullable', 'string'],
@@ -34,8 +33,12 @@ class UpdateTaskRequest extends FormRequest
             'task.done_at' => ['nullable', 'datetime'],
             'task.is_having_due_date_time' => ['required', 'boolean'],
             'task.users.*.id' => ['required', 'integer'],
+            'task.users.*.first_name' => ['required', 'string'],
+            'task.users.*.last_name' => ['required', 'string'],
+            'task.users.*.avatar' => ['nullable', 'string'],
+            'task.users.*.email' => ['required', 'string'],
             'task.options' => ['array'],
-            'task.due_date' => ['nullable', 'datetime']
+            'task.due_date' => ['nullable', 'date']
         ];
     }
 

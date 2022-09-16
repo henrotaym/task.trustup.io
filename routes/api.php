@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\Api\TaskController;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +27,6 @@ use Illuminate\Support\Facades\Storage;
 //     Route::show('/', [TaskController::class, 'index'])->name('index');
 // });
 
-Route::apiResource('tasks', TaskController::class)->middleware(AuthorizedServer::class);
+Route::apiResource('tasks', TaskController::class)
+    // ->middleware(AuthorizedServer::class)
+;

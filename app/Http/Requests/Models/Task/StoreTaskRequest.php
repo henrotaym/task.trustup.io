@@ -33,8 +33,12 @@ class StoreTaskRequest extends FormRequest
             'task.done_at' => ['nullable', 'datetime'],
             'task.is_having_due_date_time' => ['required', 'boolean'],
             'task.users.*.id' => ['required', 'integer'],
+            'task.users.*.first_name' => ['required', 'string'],
+            'task.users.*.last_name' => ['required', 'string'],
+            'task.users.*.avatar' => ['nullable', 'string'],
+            'task.users.*.email' => ['required', 'string'],
             'task.options' => ['array'],
-            'task.due_date' => ['nullable', 'datetime']
+            'task.due_date' => ['nullable', 'date']
         ];
     }
 

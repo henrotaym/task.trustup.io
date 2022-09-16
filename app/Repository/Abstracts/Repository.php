@@ -1,6 +1,7 @@
 <?php
 namespace App\Repository\Abstracts;
 
+use App\Contracts\Repository\Private\RepositoryContract;
 use App\Models\Abstracts\Model;
 
 /**
@@ -8,7 +9,7 @@ use App\Models\Abstracts\Model;
  * 
  * @template TModel of \App\Models\Abstracts\Model
  */
-abstract class Repository
+abstract class Repository implements RepositoryContract
 {
     /**
      * Related model.
@@ -23,7 +24,7 @@ abstract class Repository
      * @param TModel $model
      * @return static
      */
-    public function setModel(Model $model): Repository
+    public function setModel(Model $model): RepositoryContract
     {
         $this->model = $model;
 
@@ -45,14 +46,19 @@ abstract class Repository
      * 
      * @return static
      */
-    public function persist(): Repository
+    public function persist(): RepositoryContract
     {
         $this->getModel()?->save();
 
         return $this;
     }
 
-    public function delete(): Repository
+    /**
+     * Deleting model.
+     * 
+     * @return static
+     */
+    public function delete(): RepositoryContract
     {
         $this->getModel()->delete();
 

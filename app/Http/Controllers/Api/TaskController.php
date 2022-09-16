@@ -3,36 +3,37 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Task as TaskModel;
 use App\Http\Controllers\Controller;
+use App\Actions\Models\Task\DeleteTask;
 use App\Contracts\Queries\TaskQueryContract;
-use App\Contracts\Queries\TaskRepositoryContract;
 use App\Http\Resources\Task as TaskResource;
+use App\Actions\Models\Task\StoreFromRequest;
+use App\Actions\Models\Task\UpdateFromRequest;
 use App\Http\Requests\Models\Task\IndexTaskRequest;
 use App\Http\Requests\Models\Task\StoreTaskRequest;
 use App\Http\Requests\Models\Task\UpdateTaskRequest;
 
-class TaskControllerSave extends Controller
+class TaskController extends Controller
 {
     public function store(
         StoreTaskRequest $request,
-        TaskRepositoryContract $repository
+        StoreFromRequest $action
     ) {
-        $repository->setModel(new TaskModel)
-            ->fromCommonTask($request->getParsed()->getTask())
-            ->persist();
+        $action->setRequest($request->getParsed())
+            ->handle();
 
-        return new TaskResource($repository->getModel());
+        return new TaskResource($action->getTask());
     }
 
     public function update(
         TaskModel $task,
         UpdateTaskRequest $request,
-        TaskRepositoryContract $repository
+        UpdateFromRequest $action
     ) {
-        $repository->setModel($task)
-            ->fromCommonTask($request->getParsed()->getTask())
-            ->persist();
+        $action->setRequest($request->getParsed())
+            ->setModel($task)
+            ->handle();
 
-        return new TaskResource($repository->getModel());
+        return new TaskResource($action->getTask());
     }
 
     public function index(
@@ -44,12 +45,12 @@ class TaskControllerSave extends Controller
 
     public function destroy( 
         TaskModel $task,
-        TaskRepositoryContract $repository
+        DeleteTask $action
     ) {
-        $repository->setModel($task)
-            ->delete();
+        $action->setModel($task)
+            ->handle();
 
-        return new TaskResource($repository->getModel());
+        return new TaskResource($action->getTask());
     }
 
     public function show(

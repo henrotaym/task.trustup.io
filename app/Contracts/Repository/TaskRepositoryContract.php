@@ -1,16 +1,18 @@
 <?php
-namespace App\Contracts\Queries;
+namespace App\Contracts\Repository;
 
 use Carbon\Carbon;
-use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\TaskContract;
 use Illuminate\Support\Collection;
+use App\Contracts\Repository\Private\RepositoryContract;
+use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\TaskContract;
+use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\Traits\HasOptionContract;
 
 /**
  * Handling email attachment model changes.
  * 
  * @extends \App\Repository\Abstracts\Repository<\App\Models\Task>
  */
-interface TaskRepositoryContract extends RepositoryContract
+interface TaskRepositoryContract extends RepositoryContract, HasOptionContract
 {
         /**
      * Setting model type attribute.
@@ -45,7 +47,7 @@ interface TaskRepositoryContract extends RepositoryContract
     public function setIsDone(bool $isDone): self;
 
     /** @return static */
-    public function setDueDate(Carbon $dueDate): self;
+    public function setDueDate(?Carbon $dueDate): self;
 
     /** @return static */
     public function setIsHavingDueDateTime(bool $isHavingDueDateTime): self;
