@@ -26,7 +26,7 @@ class TaskQuery extends AbstractQuery implements TaskQueryContract
     }
 
     /** @return static */
-    public function whereModelId(int $modelId): TaskQueryContract
+    public function whereModelId(string $modelId): TaskQueryContract
     {
         $this->getQuery()->where('model_id', $modelId);
 

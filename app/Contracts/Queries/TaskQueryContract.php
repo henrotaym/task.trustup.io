@@ -11,7 +11,7 @@ interface TaskQueryContract extends QueryContract
     public function matchingIndexRequest(IndexTaskRequestContract $request): TaskQueryContract;
 
     /** @return static */
-    public function whereModelId(int $modelId): TaskQueryContract;
+    public function whereModelId(string $modelId): TaskQueryContract;
 
     /** @return static */
     public function whereModelType(string $modelType): TaskQueryContract;

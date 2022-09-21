@@ -26,7 +26,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'task.model_id' => ['required', 'integer'],
+            'task.model_id' => ['required', 'string'],
             'task.model_type' => ['required', 'string'],
             'task.app_key' => ['sometimes', 'nullable', 'string'],
             'task.title' => ['required', 'string'],

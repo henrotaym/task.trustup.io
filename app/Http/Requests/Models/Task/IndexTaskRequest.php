@@ -28,7 +28,7 @@ class IndexTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'model_id' => ['required', 'integer'],
+            'model_id' => ['required', 'string'],
             'model_type' => ['required', 'string'],
             'app_key' => ['sometimes', 'nullable', 'string'],
             'status' => [

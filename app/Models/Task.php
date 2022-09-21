@@ -37,7 +37,7 @@ class Task extends AbstractModel
         'options' => 'array'
     ];
 
-    public function getModelId(): int
+    public function getModelId(): string
     {
         return $this->model_id;
     }
