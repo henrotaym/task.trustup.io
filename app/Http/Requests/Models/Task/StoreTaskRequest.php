@@ -30,7 +30,7 @@ class StoreTaskRequest extends FormRequest
             'task.model_type' => ['required', 'string'],
             'task.app_key' => ['sometimes', 'nullable', 'string'],
             'task.title' => ['required', 'string'],
-            'task.done_at' => ['nullable', 'datetime'],
+            'task.done_at' => ['nullable', 'date'],
             'task.is_having_due_date_time' => ['required', 'boolean'],
             'task.users.*.id' => ['required', 'integer'],
             'task.users.*.first_name' => ['required', 'string'],
