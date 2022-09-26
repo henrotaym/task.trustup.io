@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "966a28daf4ae38b15b1c11d23e45f0ee",
+    "content-hash": "0a3ba95a702309382e71db814ac61bc4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1740,16 +1740,16 @@
         },
         {
             "name": "henrotaym/laravel-trustup-messaging-io",
-            "version": "v0.0.3",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/henrotaym/laravel-trustup-messaging-io.git",
-                "reference": "ac9eec0af064efbb6c80e648a41d2d63345e9e66"
+                "reference": "111a7a67c1d8d6963d86d0d9ae4c51063461bf14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrotaym/laravel-trustup-messaging-io/zipball/ac9eec0af064efbb6c80e648a41d2d63345e9e66",
-                "reference": "ac9eec0af064efbb6c80e648a41d2d63345e9e66",
+                "url": "https://api.github.com/repos/henrotaym/laravel-trustup-messaging-io/zipball/111a7a67c1d8d6963d86d0d9ae4c51063461bf14",
+                "reference": "111a7a67c1d8d6963d86d0d9ae4c51063461bf14",
                 "shasum": ""
             },
             "require": {
@@ -1785,9 +1785,9 @@
             "description": "Basic versioned php package.",
             "support": {
                 "issues": "https://github.com/henrotaym/laravel-trustup-messaging-io/issues",
-                "source": "https://github.com/henrotaym/laravel-trustup-messaging-io/tree/v0.0.3"
+                "source": "https://github.com/henrotaym/laravel-trustup-messaging-io/tree/v0.0.4"
             },
-            "time": "2022-09-26T09:42:14+00:00"
+            "time": "2022-09-26T11:13:49+00:00"
         },
         {
             "name": "henrotaym/laravel-trustup-task-io-common",

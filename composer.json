@@ -10,7 +10,7 @@
         "doctrine/dbal": "^3.4",
         "guzzlehttp/guzzle": "^7.2",
         "henrotaym/laravel-model-queries": "^1.4",
-        "henrotaym/laravel-trustup-messaging-io": "^0.0.3",
+        "henrotaym/laravel-trustup-messaging-io": "^0.0.4",
         "henrotaym/laravel-trustup-task-io-common": "^1.0.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
