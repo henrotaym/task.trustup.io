@@ -4,9 +4,11 @@ namespace App\Models;
 use App\Contracts\Api\Auth\Endpoints\UserEndpointContract;
 use App\Models\Abstracts\Model as AbstractModel;
 use Carbon\Carbon;
+use Henrotaym\LaravelTrustupMessagingIo\Contracts\Models\MessagingIoModelContract;
+use Henrotaym\LaravelTrustupMessagingIo\Models\Traits\IsMessagingIoModel;
 use Illuminate\Support\Collection;
 
-class Task extends AbstractModel
+class Task extends AbstractModel implements MessagingIoModelContract
 {
     protected ?Collection $authUsers = null;
     /**
@@ -36,6 +38,8 @@ class Task extends AbstractModel
         'user_ids' => 'array',
         'options' => 'array'
     ];
+
+    use IsMessagingIoModel;
 
     public function getModelId(): string
     {

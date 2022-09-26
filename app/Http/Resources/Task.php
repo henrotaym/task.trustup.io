@@ -2,12 +2,13 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use App\Models\Task as TaskModel;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\UserContract;
+use Henrotaym\LaravelTrustupMessagingIo\Http\Resources\MessagingIoModel;
 use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Transformers\Models\UserTransformerContract;
 
-class Task extends JsonResource
+class Task extends MessagingIoModel
 {
     /** @var TaskModel */
     public $resource;
@@ -17,7 +18,7 @@ class Task extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    protected function getAttributes(Request $request): array
     {
         /** @var UserTransformerContract */
         $transformer = app()->make(UserTransformerContract::class);

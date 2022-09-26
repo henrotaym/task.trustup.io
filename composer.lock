@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c22e37d50543fe16e0453b2eec0bcd1d",
+    "content-hash": "966a28daf4ae38b15b1c11d23e45f0ee",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1737,6 +1737,57 @@
                 "source": "https://github.com/henrotaym/laravel-test-suite/tree/v2.2.3"
             },
             "time": "2022-02-01T02:12:44+00:00"
+        },
+        {
+            "name": "henrotaym/laravel-trustup-messaging-io",
+            "version": "v0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/henrotaym/laravel-trustup-messaging-io.git",
+                "reference": "ac9eec0af064efbb6c80e648a41d2d63345e9e66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/henrotaym/laravel-trustup-messaging-io/zipball/ac9eec0af064efbb6c80e648a41d2d63345e9e66",
+                "reference": "ac9eec0af064efbb6c80e648a41d2d63345e9e66",
+                "shasum": ""
+            },
+            "require": {
+                "henrotaym/laravel-package-versioning-config": "^1.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Henrotaym\\LaravelTrustupMessagingIo\\Providers\\LaravelTrustupMessagingIoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Henrotaym\\LaravelTrustupMessagingIo\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Henrotay",
+                    "email": "mathieu.henrotay@gmail.com"
+                }
+            ],
+            "description": "Basic versioned php package.",
+            "support": {
+                "issues": "https://github.com/henrotaym/laravel-trustup-messaging-io/issues",
+                "source": "https://github.com/henrotaym/laravel-trustup-messaging-io/tree/v0.0.3"
+            },
+            "time": "2022-09-26T09:42:14+00:00"
         },
         {
             "name": "henrotaym/laravel-trustup-task-io-common",
