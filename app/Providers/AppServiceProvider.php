@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
-use App\Api\Auth\Endpoints\UserEndpoint;
 use App\Queries\TaskQuery;
 use App\Repository\TaskRepository;
-use Henrotaym\LaravelContainerAutoRegister\Services\AutoRegister\Contracts\AutoRegisterContract;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use App\Api\Auth\Endpoints\UserEndpoint;
+use App\Models\Task;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Henrotaym\LaravelContainerAutoRegister\Services\AutoRegister\Contracts\AutoRegisterContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
         $autoRegister->scanWhere(TaskQuery::class);
         $autoRegister->scanWhere(TaskRepository::class);
         $autoRegister->scanWhere(UserEndpoint::class);
+
+        Relation::enforceMorphMap([
+            'task' => Task::class
+        ]);
     }
 
     /**
