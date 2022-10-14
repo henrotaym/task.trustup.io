@@ -57,3 +57,7 @@ data:
 
   SCOUT_DRIVER: "meilisearch"
   MEILISEARCH_HOST: "http://meilisearch:7700"
+
+  TRUSTUP_MESSAGING_API_URL: "https://messaging.trustup.io/api"
+  TRUSTUP_MESSAGING_APP_KEY: "trustup-io-task"
+  TRUSTUP_AUTH_IO_URL: "https://auth.trustup.io"
