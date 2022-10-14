@@ -7,6 +7,7 @@ use App\Models\Task as TaskModel;
 use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Models\UserContract;
 use Henrotaym\LaravelTrustupMessagingIo\Http\Resources\MessagingIoModel;
 use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Transformers\Models\UserTransformerContract;
+use stdClass;
 
 class Task extends MessagingIoModel
 {
@@ -37,7 +38,9 @@ class Task extends MessagingIoModel
             'app_key' => $this->resource->getAppKey(),
             'model_id' => $this->resource->getModelId(),
             'model_type' => $this->resource->getModelType(),
-            'options' => $this->resource->getOptions()
+            'options' => count($this->resource->getOptions()) ?
+                $this->resource->getOptions()
+                : new stdClass
         ];
     }
 }
