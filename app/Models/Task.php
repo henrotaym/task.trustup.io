@@ -21,6 +21,8 @@ class Task extends AbstractModel implements MessagingIoModelContract
         'model_id',
         'model_type',
         'app_key',
+        'professional_authorization_key',
+        'account_uuid',
         'title',
         'done_at',
         'due_date',
@@ -57,6 +59,16 @@ class Task extends AbstractModel implements MessagingIoModelContract
         return $this->app_key;
     }
 
+    public function getProfessionalAuthorizationKey(): ?string
+    {
+        return $this->professional_authorization_key;
+    }
+
+    public function getAccountUuid(): ?string
+    {
+        return $this->account_uuid;
+    }
+
     public function getTitle(): string
     {
         return $this->title;
@@ -88,7 +100,7 @@ class Task extends AbstractModel implements MessagingIoModelContract
         return $this->options ?? [];
     }
 
-    public function getUserIds()
+    public function getUserIds(): array
     {
         return $this->user_ids;
     }

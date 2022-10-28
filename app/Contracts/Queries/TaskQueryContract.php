@@ -17,6 +17,12 @@ interface TaskQueryContract extends QueryContract
     public function whereModelType(string $modelType): TaskQueryContract;
 
     /** @return static */
+    public function whereProfessionalAuthorizationKey(string $professionalAuthorizationKey): TaskQueryContract;
+
+    /** @return static */
+    public function whereAccountUuid(string $accountUuid): TaskQueryContract;
+
+    /** @return static */
     public function whereAppKey(?string $appKey): TaskQueryContract;
 
     /** @return static */

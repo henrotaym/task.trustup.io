@@ -38,6 +38,8 @@ class Task extends MessagingIoModel
             'app_key' => $this->resource->getAppKey(),
             'model_id' => $this->resource->getModelId(),
             'model_type' => $this->resource->getModelType(),
+            'professional_authorization_key' => $this->resource->getProfessionalAuthorizationKey(),
+            'account_uuid' => $this->resource->getAccountUuid(),
             'options' => count($this->resource->getOptions()) ?
                 $this->resource->getOptions()
                 : new stdClass

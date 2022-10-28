@@ -27,9 +27,28 @@ class IndexTaskRequest extends FormRequest
      */
     public function rules()
     {
+        $hasAccountUuid = !!$this->input('account_uuid');
+        $hasProfessionalAuthorizationKey = !!$this->input('professional_authorization_key');
+
+        $isStandardRequest = !$hasProfessionalAuthorizationKey && !$hasAccountUuid;
+
         return [
-            'model_id' => ['required', 'string'],
-            'model_type' => ['required', 'string'],
+            'model_id' => [
+                Rule::requiredIf(fn () => $isStandardRequest),
+                'string'
+            ],
+            'model_type' => [
+                Rule::requiredIf(fn () => $isStandardRequest),
+                'string'
+            ],
+            'professional_authorization_key' => [
+                Rule::requiredIf(fn () => !$isStandardRequest && !$hasAccountUuid),
+                'string'
+            ],
+            'account_uuid' => [
+                Rule::requiredIf(fn () => !$isStandardRequest && !$hasProfessionalAuthorizationKey),
+                'string'
+            ],
             'app_key' => ['sometimes', 'nullable', 'string'],
             'status' => [
                 'sometimes',
