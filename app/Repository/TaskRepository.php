@@ -63,6 +63,32 @@ class TaskRepository extends Repository implements TaskRepositoryContract
     }
 
     /**
+     * Setting model professional authorization key.
+     * 
+     * @param ?string $professionalAuthorizationKey
+     * @return static
+     */
+    public function setProfessionalAuthorizationKey(?string $professionalAuthorizationKey): self
+    {
+        $this->getModel()->professional_authorization_key = $professionalAuthorizationKey;
+
+        return $this;
+    }
+
+    /**
+     * Setting model account uuid.
+     * 
+     * @param ?string $accountUuid
+     * @return static
+     */
+    public function setAccountUuid(?string $accountUuid): self
+    {
+        $this->getModel()->account_uuid = $accountUuid;
+
+        return $this;
+    }
+
+    /**
      * Setting model id attribute.
      * 
      * @param string|null $appKey
@@ -132,7 +158,9 @@ class TaskRepository extends Repository implements TaskRepositoryContract
             ->setUsers($task->getUsers())
             ->setAppKey($task->getAppKey())
             ->setModelId($task->getModelId())
-            ->setModelType($task->getModelType());
+            ->setModelType($task->getModelType())
+            ->setProfessionalAuthorizationKey($task->getProfessionalAuthorizationKey())
+            ->setAccountUuid($task->getAccountUuid());
         
         $this->getModel()->options = $this->options;
 

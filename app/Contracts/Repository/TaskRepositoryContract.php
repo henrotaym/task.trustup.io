@@ -30,6 +30,22 @@ interface TaskRepositoryContract extends RepositoryContract, HasOptionContract
     public function setModelId(string $modelId): self;
 
     /**
+     * Setting model professional authorization key.
+     * 
+     * @param ?string $professionalAuthorizationKey
+     * @return static
+     */
+    public function setProfessionalAuthorizationKey(?string $professionalAuthorizationKey): self;
+
+    /**
+     * Setting model account uuid.
+     * 
+     * @param ?string $accountUuid
+     * @return static
+     */
+    public function setAccountUuid(?string $accountUuid): self;
+
+    /**
      * Setting model id attribute.
      * 
      * @param string|null $appKey
