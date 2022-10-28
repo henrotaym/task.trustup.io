@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Collections\Models\TaskCollection;
 use App\Contracts\Api\Auth\Endpoints\UserEndpointContract;
 use App\Models\Abstracts\Model as AbstractModel;
 use Carbon\Carbon;
@@ -87,6 +88,11 @@ class Task extends AbstractModel implements MessagingIoModelContract
         return $this->options ?? [];
     }
 
+    public function getUserIds()
+    {
+        return $this->user_ids;
+    }
+
     public function getUsers(): Collection
     {
         if ($this->authUsers):
@@ -96,7 +102,14 @@ class Task extends AbstractModel implements MessagingIoModelContract
         /** @var UserEndpointContract */
         $api = app()->make(UserEndpointContract::class);
 
-        return $this->authUsers = $api->getUserByIds($this->user_ids);
+        return $this->authUsers = $api->getUserByIds($this->getUserIds());
+    }
+
+    public function setAuthUsers(Collection $authUsers): self
+    {
+        $this->authUsers = $authUsers;
+
+        return $this;
     }
 
     /**
@@ -109,5 +122,16 @@ class Task extends AbstractModel implements MessagingIoModelContract
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('uuid', $value)->firstOrFail();
+    }
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new TaskCollection($models);
     }
 }
