@@ -5,13 +5,21 @@ use App\Collections\Models\TaskCollection;
 use App\Contracts\Api\Auth\Endpoints\UserEndpointContract;
 use App\Models\Abstracts\Model as AbstractModel;
 use Carbon\Carbon;
+use Deegitalbe\LaravelTrustupModelBroadcast\Contracts\Models\TrustupBroadcastModelContract;
+use Deegitalbe\LaravelTrustupModelBroadcast\Traits\Models\IsTrustupBroadcastModel;
 use Henrotaym\LaravelTrustupMessagingIo\Contracts\Models\MessagingIoModelContract;
 use Henrotaym\LaravelTrustupMessagingIo\Models\Traits\IsMessagingIoModel;
 use Illuminate\Support\Collection;
 
-class Task extends AbstractModel implements MessagingIoModelContract
+class Task extends AbstractModel implements MessagingIoModelContract, TrustupBroadcastModelContract
 {
+    use
+        IsMessagingIoModel,
+        IsTrustupBroadcastModel
+    ;
+
     protected ?Collection $authUsers = null;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -41,8 +49,6 @@ class Task extends AbstractModel implements MessagingIoModelContract
         'user_ids' => 'array',
         'options' => 'array'
     ];
-
-    use IsMessagingIoModel;
 
     public function getModelId(): string
     {
@@ -122,6 +128,20 @@ class Task extends AbstractModel implements MessagingIoModelContract
         $this->authUsers = $authUsers;
 
         return $this;
+    }
+
+    /**
+     * Getting attributes sent along when broadcasing events.
+     
+     * @param string $eventName Laravel model event that should be broadcasted (created, updated, deleted, ...)
+     * @return array<string, mixed>
+     */
+    public function getTrustupModelBroadcastEventAttributes(string $eventName): array
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'title' => $this->getTitle()
+        ];
     }
 
     /**

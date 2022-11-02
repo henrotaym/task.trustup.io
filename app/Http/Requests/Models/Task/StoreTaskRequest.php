@@ -38,7 +38,9 @@ class StoreTaskRequest extends FormRequest
             'task.users.*.avatar' => ['nullable', 'string'],
             'task.users.*.email' => ['required', 'string'],
             'task.options' => ['array'],
-            'task.due_date' => ['nullable', 'date']
+            'task.due_date' => ['nullable', 'date'],
+            'task.professional_authorization_key' => ['nullable', 'string'],
+            'task.account_uuid' => ['nullable', 'string']
         ];
     }
 
