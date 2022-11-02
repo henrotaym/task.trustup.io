@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Task as TaskModel;
 use App\Http\Controllers\Controller;
 use App\Actions\Models\Task\DeleteTask;
+use App\Collections\Models\TaskCollection;
 use App\Contracts\Queries\TaskQueryContract;
 use App\Http\Resources\Task as TaskResource;
 use App\Actions\Models\Task\StoreFromRequest;
 use App\Actions\Models\Task\UpdateFromRequest;
+use App\Enum\Models\Task\TaskExternalRelationship;
 use App\Http\Requests\Models\Task\IndexTaskRequest;
 use App\Http\Requests\Models\Task\StoreTaskRequest;
 use App\Http\Requests\Models\Task\UpdateTaskRequest;
@@ -40,7 +42,11 @@ class TaskController extends Controller
         IndexTaskRequest $request,
         TaskQueryContract $query
     ) {
-        return TaskResource::collection($query->matchingIndexRequest($request->getParsed())->get());
+        /** @var TaskCollection */
+        $tasks = $query->matchingIndexRequest($request->getParsed())->get();
+        $tasks->loadExternal(TaskExternalRelationship::USERS);
+
+        return TaskResource::collection($tasks);
     }
 
     public function destroy( 

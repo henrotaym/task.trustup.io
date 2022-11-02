@@ -1,16 +1,25 @@
 <?php
 namespace App\Models;
 
+use App\Collections\Models\TaskCollection;
 use App\Contracts\Api\Auth\Endpoints\UserEndpointContract;
 use App\Models\Abstracts\Model as AbstractModel;
 use Carbon\Carbon;
+use Deegitalbe\LaravelTrustupModelBroadcast\Contracts\Models\TrustupBroadcastModelContract;
+use Deegitalbe\LaravelTrustupModelBroadcast\Traits\Models\IsTrustupBroadcastModel;
 use Henrotaym\LaravelTrustupMessagingIo\Contracts\Models\MessagingIoModelContract;
 use Henrotaym\LaravelTrustupMessagingIo\Models\Traits\IsMessagingIoModel;
 use Illuminate\Support\Collection;
 
-class Task extends AbstractModel implements MessagingIoModelContract
+class Task extends AbstractModel implements MessagingIoModelContract, TrustupBroadcastModelContract
 {
+    use
+        IsMessagingIoModel,
+        IsTrustupBroadcastModel
+    ;
+
     protected ?Collection $authUsers = null;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +29,8 @@ class Task extends AbstractModel implements MessagingIoModelContract
         'model_id',
         'model_type',
         'app_key',
+        'professional_authorization_key',
+        'account_uuid',
         'title',
         'done_at',
         'due_date',
@@ -39,8 +50,6 @@ class Task extends AbstractModel implements MessagingIoModelContract
         'options' => 'array'
     ];
 
-    use IsMessagingIoModel;
-
     public function getModelId(): string
     {
         return $this->model_id;
@@ -54,6 +63,16 @@ class Task extends AbstractModel implements MessagingIoModelContract
     public function getAppKey(): ?string
     {
         return $this->app_key;
+    }
+
+    public function getProfessionalAuthorizationKey(): ?string
+    {
+        return $this->professional_authorization_key;
+    }
+
+    public function getAccountUuid(): ?string
+    {
+        return $this->account_uuid;
     }
 
     public function getTitle(): string
@@ -87,6 +106,11 @@ class Task extends AbstractModel implements MessagingIoModelContract
         return $this->options ?? [];
     }
 
+    public function getUserIds(): array
+    {
+        return $this->user_ids;
+    }
+
     public function getUsers(): Collection
     {
         if ($this->authUsers):
@@ -96,7 +120,28 @@ class Task extends AbstractModel implements MessagingIoModelContract
         /** @var UserEndpointContract */
         $api = app()->make(UserEndpointContract::class);
 
-        return $this->authUsers = $api->getUserByIds($this->user_ids);
+        return $this->authUsers = $api->getUserByIds($this->getUserIds());
+    }
+
+    public function setAuthUsers(Collection $authUsers): self
+    {
+        $this->authUsers = $authUsers;
+
+        return $this;
+    }
+
+    /**
+     * Getting attributes sent along when broadcasing events.
+     
+     * @param string $eventName Laravel model event that should be broadcasted (created, updated, deleted, ...)
+     * @return array<string, mixed>
+     */
+    public function getTrustupModelBroadcastEventAttributes(string $eventName): array
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'title' => $this->getTitle()
+        ];
     }
 
     /**
@@ -109,5 +154,16 @@ class Task extends AbstractModel implements MessagingIoModelContract
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('uuid', $value)->firstOrFail();
+    }
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new TaskCollection($models);
     }
 }

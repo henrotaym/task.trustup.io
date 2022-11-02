@@ -17,12 +17,22 @@ class TaskQuery extends AbstractQuery implements TaskQueryContract
     /** @return static */
     public function matchingIndexRequest(IndexTaskRequestContract $request): TaskQueryContract
     {
-        $query =  $this->whereAppKey($request->getAppKey())
-            ->whereModelId($request->getModelId())
-            ->whereModelType($request->getModelType())
-            ->whereStatus($request->getStatus());
+        if ($request->isStandardRequest()):
+            return $this->whereAppKey($request->getAppKey())
+                ->whereModelId($request->getModelId())
+                ->whereModelType($request->getModelType())
+                ->whereStatus($request->getStatus());
+        endif;
 
-        return $query;
+        if ($request->getProfessionalAuthorizationKey()):
+            $this->whereProfessionalAuthorizationKey($request->getProfessionalAuthorizationKey());
+        endif;
+
+        if ($request->getAccountUuid()):
+            $this->whereAccountUuid($request->getAccountUuid());
+        endif;
+
+        return $this;
     }
 
     /** @return static */
@@ -68,6 +78,22 @@ class TaskQuery extends AbstractQuery implements TaskQueryContract
                     ->orWhereNull('done_at')
             )
         };
+
+        return $this;
+    }
+
+    /** @return static */
+    public function whereProfessionalAuthorizationKey(string $professionalAuthorizationKey): TaskQueryContract
+    {
+        $this->getQuery()->where('professional_authorization_key', $professionalAuthorizationKey);
+
+        return $this;
+    }
+
+    /** @return static */
+    public function whereAccountUuid(string $accountUuid): TaskQueryContract
+    {
+        $this->getQuery()->where('account_uuid', $accountUuid);
 
         return $this;
     }
