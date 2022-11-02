@@ -61,3 +61,5 @@ data:
   TRUSTUP_MESSAGING_API_URL: "https://messaging.trustup.io/api"
   TRUSTUP_MESSAGING_APP_KEY: "trustup-io-task"
   TRUSTUP_AUTH_IO_URL: "https://auth.trustup.io"
+  TRUSTUP_MODEL_BROADCAST_APP_KEY: "trustup-io-task"
+
