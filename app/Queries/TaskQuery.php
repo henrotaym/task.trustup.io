@@ -1,11 +1,12 @@
 <?php
 namespace App\Queries;
 
-use App\Contracts\Queries\TaskQueryContract;
 use App\Models\Task;
+use Illuminate\Support\Collection;
+use App\Contracts\Queries\TaskQueryContract;
 use Henrotaym\LaravelModelQueries\Queries\Abstracts\AbstractQuery;
-use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Requests\Task\IndexTaskRequestContract;
 use Henrotaym\LaravelTrustupTaskIoCommon\Enum\Requests\Task\TaskStatus;
+use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Requests\Task\IndexTaskRequestContract;
 
 class TaskQuery extends AbstractQuery implements TaskQueryContract
 {
@@ -17,6 +18,18 @@ class TaskQuery extends AbstractQuery implements TaskQueryContract
     /** @return static */
     public function matchingIndexRequest(IndexTaskRequestContract $request): TaskQueryContract
     {
+        if ($request->hasUserIds()):
+            $this->whereUserIds($request->getUserIds());
+        endif;
+
+        if ($request->isOrderingByLatestDueDate()):
+            $this->orderByLatestDueDate();
+        endif;
+
+        if ($request->isOrderingByOldestDueDate()):
+            $this->orderByOldestDueDate();
+        endif;
+
         if ($request->isStandardRequest()):
             return $this->whereAppKey($request->getAppKey())
                 ->whereModelId($request->getModelId())
@@ -94,6 +107,33 @@ class TaskQuery extends AbstractQuery implements TaskQueryContract
     public function whereAccountUuid(string $accountUuid): TaskQueryContract
     {
         $this->getQuery()->where('account_uuid', $accountUuid);
+
+        return $this;
+    }
+
+    /**
+     * @param Collection<int, int> $userIds
+     * @return static
+     */
+    public function whereUserIds(Collection $userIds): TaskQueryContract
+    {
+        $this->getQuery()->whereJsonContains('user_ids',  $userIds->map(fn (int $id) => $id));
+
+        return $this;
+    }
+
+    /** @return static */
+    public function orderByLatestDueDate(): TaskQueryContract
+    {
+        $this->getQuery()->orderBy('due_date', 'desc');
+
+        return $this;
+    }
+
+    /** @return static */
+    public function orderByOldestDueDate(): TaskQueryContract
+    {
+        $this->getQuery()->orderBy('due_date', 'asc');
 
         return $this;
     }

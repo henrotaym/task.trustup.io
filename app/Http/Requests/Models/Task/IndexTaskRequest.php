@@ -54,6 +54,10 @@ class IndexTaskRequest extends FormRequest
                 'sometimes',
                 Rule::in(TaskStatus::values())
             ],
+            'latest_due_date' => 'sometimes|boolean',
+            'oldest_due_date' => 'sometimes|boolean',
+            'user_ids' => 'sometimes|array',
+            'user_ids.*' => 'integer'
         ];
     }
 

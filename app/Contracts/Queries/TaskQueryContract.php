@@ -1,9 +1,10 @@
 <?php
 namespace App\Contracts\Queries;
 
+use Illuminate\Support\Collection;
 use Henrotaym\LaravelModelQueries\Queries\Contracts\QueryContract;
-use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Requests\Task\IndexTaskRequestContract;
 use Henrotaym\LaravelTrustupTaskIoCommon\Enum\Requests\Task\TaskStatus;
+use Henrotaym\LaravelTrustupTaskIoCommon\Contracts\Requests\Task\IndexTaskRequestContract;
 
 interface TaskQueryContract extends QueryContract
 {
@@ -29,4 +30,16 @@ interface TaskQueryContract extends QueryContract
     public function whereUuid(string $uuid): TaskQueryContract;
 
     public function whereStatus(TaskStatus $status): TaskQueryContract;
+
+    /**
+     * @param Collection<int, int> $userIds
+     * @return static
+     */
+    public function whereUserIds(Collection $userIds): TaskQueryContract;
+
+    /** @return static */
+    public function orderByLatestDueDate(): TaskQueryContract;
+
+    /** @return static */
+    public function orderByOldestDueDate(): TaskQueryContract;
 }
